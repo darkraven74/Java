@@ -13,12 +13,12 @@ import java.util.NoSuchElementException;
 public class Bag extends AbstractCollection<Object> {
 
 	private Map<Object, LinkedList<Object>> data;
-	private int version, number;
+	private int version, size;
 
 	public Bag() {
 		data = new HashMap<Object, LinkedList<Object>>();
 		version = 0;
-		number = 0;
+		size = 0;
 	}
 
 	public Bag(Collection<?> c) {
@@ -29,7 +29,7 @@ public class Bag extends AbstractCollection<Object> {
 	@Override
 	public void clear() {
 		data.clear();
-		number = 0;
+		size = 0;
 		version++;
 	}
 
@@ -41,7 +41,7 @@ public class Bag extends AbstractCollection<Object> {
 	@Override
 	public boolean add(Object o) {
 		version++;
-		number++;
+		size++;
 		LinkedList<Object> list = data.get(o);
 		if (list == null) {
 			list = new LinkedList<Object>();
@@ -63,7 +63,7 @@ public class Bag extends AbstractCollection<Object> {
 			list.remove(0);
 		}
 		version++;
-		number--;
+		size--;
 		return true;
 	}
 
@@ -74,7 +74,7 @@ public class Bag extends AbstractCollection<Object> {
 
 	@Override
 	public int size() {
-		return number;
+		return size;
 	}
 
 	public class BagIterator implements Iterator<Object> {
@@ -125,13 +125,11 @@ public class Bag extends AbstractCollection<Object> {
 				entryIterator.remove();
 			} else {
 				list.remove(list.size() - count - 1);
-				data.put(entry.getKey(), list);
 			}
 			iteratorVersion++;
 			version++;
-			number--;
+			size--;
 			canRemove = false;
 		}
-
 	}
 }

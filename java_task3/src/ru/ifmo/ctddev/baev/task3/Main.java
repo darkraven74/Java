@@ -16,7 +16,7 @@ public class Main {
 		t.add(4);
 
 		Iterator<Object> i = t.iterator();
-		//i.remove();
+		
 		while (i.hasNext()) {
 			System.out.print(i.next().toString() + " ");
 		}
