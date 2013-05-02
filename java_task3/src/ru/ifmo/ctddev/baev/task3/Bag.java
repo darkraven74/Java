@@ -10,18 +10,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 
-public class Bag extends AbstractCollection<Object> {
+public class Bag<E> extends AbstractCollection<E> {
 
-	private Map<Object, LinkedList<Object>> data;
+	private Map<E, LinkedList<E>> data;
 	private int version, size;
 
 	public Bag() {
-		data = new HashMap<Object, LinkedList<Object>>();
+		data = new HashMap<E, LinkedList<E>>();
 		version = 0;
 		size = 0;
 	}
 
-	public Bag(Collection<?> c) {
+	public Bag(Collection<? extends E> c) {
 		this();
 		addAll(c);
 	}
@@ -39,12 +39,12 @@ public class Bag extends AbstractCollection<Object> {
 	}
 
 	@Override
-	public boolean add(Object o) {
+	public boolean add(E o) {
 		version++;
 		size++;
-		LinkedList<Object> list = data.get(o);
+		LinkedList<E> list = data.get(o);
 		if (list == null) {
-			list = new LinkedList<Object>();
+			list = new LinkedList<E>();
 			data.put(o, list);
 		}
 		list.add(o);
@@ -56,7 +56,7 @@ public class Bag extends AbstractCollection<Object> {
 		if (!data.containsKey(o)) {
 			return false;
 		}
-		LinkedList<Object> list = data.get(o);
+		LinkedList<E> list = data.get(o);
 		if (list.size() == 1) {
 			data.remove(o);
 		} else {
@@ -77,12 +77,12 @@ public class Bag extends AbstractCollection<Object> {
 		return size;
 	}
 
-	public class BagIterator implements Iterator<Object> {
+	public class BagIterator implements Iterator<E> {
 
-		private Iterator<Entry<Object, LinkedList<Object>>> entryIterator;
-		private Entry<Object, LinkedList<Object>> entry;
+		private Iterator<Entry<E, LinkedList<E>>> entryIterator;
+		private Entry<E, LinkedList<E>> entry;
 		private int count, iteratorVersion;
-		private LinkedList<Object> list;
+		private LinkedList<E> list;
 		private boolean canRemove;
 
 		public BagIterator() {
@@ -99,7 +99,7 @@ public class Bag extends AbstractCollection<Object> {
 		}
 
 		@Override
-		public Object next() {
+		public E next() {
 			if (!hasNext()) {
 				throw new NoSuchElementException();
 			}

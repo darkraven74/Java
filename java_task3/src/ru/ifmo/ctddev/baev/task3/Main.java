@@ -1,11 +1,13 @@
 package ru.ifmo.ctddev.baev.task3;
 
 import java.util.Iterator;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class Main {
 	public static void main(String[] args) {
 		//LinkedBag t = new LinkedBag();
-		Bag t = new Bag();
+		Bag<Integer> t = new Bag<Integer>();
 
 		t.add(1);
 		t.add(2);
@@ -14,12 +16,11 @@ public class Main {
 		t.add(2);
 		t.add(4);
 		t.add(4);
-
-		Iterator<Object> i = t.iterator();
+		
+		Iterator<Integer> i = t.iterator();
 		
 		while (i.hasNext()) {
 			System.out.print(i.next().toString() + " ");
 		}
-
 	}
 }
