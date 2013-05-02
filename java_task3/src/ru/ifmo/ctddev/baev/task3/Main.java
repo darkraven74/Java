@@ -1,12 +1,10 @@
 package ru.ifmo.ctddev.baev.task3;
 
 import java.util.Iterator;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 public class Main {
 	public static void main(String[] args) {
-		//LinkedBag t = new LinkedBag();
+		//LinkedBag<Integer> t = new LinkedBag<Integer>();
 		Bag<Integer> t = new Bag<Integer>();
 
 		t.add(1);

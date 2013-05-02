@@ -9,21 +9,21 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public class LinkedBag extends AbstractCollection<Object> {
+public class LinkedBag<E> extends AbstractCollection<E> {
 
-	private Map<Object, ArrayList<Node>> data;
+	private Map<E, ArrayList<Node>> data;
 	private int size;
 	private int version;
 	private Node begin;
 	private Node end;
 
 	private class Node {
-		public Object val;
+		public E val;
 		public Node next;
 		public Node prev;
 		public int id;
 
-		public Node(Object val, int id, Node prev) {
+		public Node(E val, int id, Node prev) {
 			this.val = val;
 			this.id = id;
 			this.prev = prev;
@@ -32,14 +32,14 @@ public class LinkedBag extends AbstractCollection<Object> {
 	}
 
 	public LinkedBag() {
-		data = new HashMap<Object, ArrayList<Node>>();
+		data = new HashMap<E, ArrayList<Node>>();
 		size = 0;
 		version = 0;
 		begin = new Node(null, -1, null);
 		end = begin;
 	}
 
-	public LinkedBag(Collection<?> c) {
+	public LinkedBag(Collection<? extends E> c) {
 		this();
 		addAll(c);
 	}
@@ -59,7 +59,7 @@ public class LinkedBag extends AbstractCollection<Object> {
 	}
 
 	@Override
-	public boolean add(Object o) {
+	public boolean add(E o) {
 		size++;
 		version++;
 		int id = 0;
@@ -71,7 +71,7 @@ public class LinkedBag extends AbstractCollection<Object> {
 		end = node;
 		ArrayList<Node> list = data.get(o);
 		if (list == null) {
-			list = new ArrayList<>();
+			list = new ArrayList<Node>();
 			data.put(o, list);
 		}
 		list.add(node);
@@ -109,7 +109,7 @@ public class LinkedBag extends AbstractCollection<Object> {
 		return size;
 	}
 
-	public class LinkedBagIterator implements Iterator<Object> {
+	public class LinkedBagIterator implements Iterator<E> {
 
 		private boolean canRemove;
 		private Node cur;
@@ -127,7 +127,7 @@ public class LinkedBag extends AbstractCollection<Object> {
 		}
 
 		@Override
-		public Object next() {
+		public E next() {
 			if (iteratorVersion != version) {
 				throw new ConcurrentModificationException();
 			}
