@@ -6,17 +6,18 @@ import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 
 public class Bag<E> extends AbstractCollection<E> {
 
-	private Map<E, LinkedList<E>> data;
+	private Map<E, List<E>> data;
 	private int version, size;
 
 	public Bag() {
-		data = new HashMap<E, LinkedList<E>>();
+		data = new HashMap<E, List<E>>();
 		version = 0;
 		size = 0;
 	}
@@ -42,7 +43,7 @@ public class Bag<E> extends AbstractCollection<E> {
 	public boolean add(E o) {
 		version++;
 		size++;
-		LinkedList<E> list = data.get(o);
+		List<E> list = data.get(o);
 		if (list == null) {
 			list = new LinkedList<E>();
 			data.put(o, list);
@@ -56,7 +57,7 @@ public class Bag<E> extends AbstractCollection<E> {
 		if (!data.containsKey(o)) {
 			return false;
 		}
-		LinkedList<E> list = data.get(o);
+		List<E> list = data.get(o);
 		if (list.size() == 1) {
 			data.remove(o);
 		} else {
@@ -79,10 +80,10 @@ public class Bag<E> extends AbstractCollection<E> {
 
 	public class BagIterator implements Iterator<E> {
 
-		private Iterator<Entry<E, LinkedList<E>>> entryIterator;
-		private Entry<E, LinkedList<E>> entry;
+		private Iterator<Entry<E, List<E>>> entryIterator;
+		private Entry<E, List<E>> entry;
 		private int count, iteratorVersion;
-		private LinkedList<E> list;
+		private List<E> list;
 		private boolean canRemove;
 
 		public BagIterator() {

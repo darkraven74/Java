@@ -6,12 +6,13 @@ import java.util.Collection;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class LinkedBag<E> extends AbstractCollection<E> {
 
-	private Map<E, ArrayList<Node>> data;
+	private Map<E, List<Node>> data;
 	private int size;
 	private int version;
 	private Node begin;
@@ -32,7 +33,7 @@ public class LinkedBag<E> extends AbstractCollection<E> {
 	}
 
 	public LinkedBag() {
-		data = new HashMap<E, ArrayList<Node>>();
+		data = new HashMap<E, List<Node>>();
 		size = 0;
 		version = 0;
 		begin = new Node(null, -1, null);
@@ -69,7 +70,7 @@ public class LinkedBag<E> extends AbstractCollection<E> {
 		Node node = new Node(o, id, end);
 		end.next = node;
 		end = node;
-		ArrayList<Node> list = data.get(o);
+		List<Node> list = data.get(o);
 		if (list == null) {
 			list = new ArrayList<Node>();
 			data.put(o, list);
@@ -85,7 +86,7 @@ public class LinkedBag<E> extends AbstractCollection<E> {
 		}
 		size--;
 		version++;
-		ArrayList<Node> list = data.get(o);
+		List<Node> list = data.get(o);
 		Node node = list.get(list.size() - 1);
 		if (node.next != null) {
 			node.next.prev = node.prev;
@@ -123,7 +124,7 @@ public class LinkedBag<E> extends AbstractCollection<E> {
 
 		@Override
 		public boolean hasNext() {
-			return cur.next != null; 
+			return cur.next != null;
 		}
 
 		@Override
@@ -154,7 +155,7 @@ public class LinkedBag<E> extends AbstractCollection<E> {
 				cur.next.prev = cur.prev;
 			}
 			cur.prev.next = cur.next;
-			ArrayList<Node> list = data.get(cur.val);
+			List<Node> list = data.get(cur.val);
 			list.set(cur.id, list.get(list.size() - 1));
 			list.get(cur.id).id = cur.id;
 			list.remove(list.size() - 1);
