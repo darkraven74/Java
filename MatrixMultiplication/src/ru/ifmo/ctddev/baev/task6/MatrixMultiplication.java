@@ -2,6 +2,8 @@ package ru.ifmo.ctddev.baev.task6;
 
 import java.util.Random;
 
+import javax.swing.JApplet;
+
 /**
  * Class for multi-threaded matrix multiplication.
  * 
@@ -17,14 +19,17 @@ public class MatrixMultiplication {
 	private static int[][] matrixA;
 	/** matrix b. */
 	private static int[][] matrixB;
-	
+	/** matrix anwser. */
+	private static int[][] matrixAnwser;
+
 	/**
-	 * Initialization of 2 matrices with random numbers.
+	 * Initializes 2 matrices with random numbers.
 	 */
 	private static void matrixInit() {
 		Random random = new Random();
 		matrixA = new int[n][n];
 		matrixB = new int[n][n];
+		matrixAnwser = new int[n][n];
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
 				matrixA[i][j] = random.nextInt();
@@ -32,13 +37,40 @@ public class MatrixMultiplication {
 			}
 		}
 	}
+
+	/**
+	 * Calculates <code>i</code>, <code>j</code> cell of {@link #matrixAnwser}.
+	 * @param i index of row.
+	 * @param j index of column.
+	 */
+	private static void calculateCell(int i, int j) {
+		int anwser = 0;
+		for (int k = 0; k < n; k++) {
+			anwser += matrixA[i][k] * matrixB[k][j];
+		}
+		matrixAnwser[i][j] = anwser;
+	}
 	
+	/**
+	 * Calculates sum of elements in {@link #matrixAnwser}.
+	 * @return Sum of elements in {@link #matrixAnwser}.
+	 */
+	private static int calculateSum() {
+		int anwser = 0;
+		for (int[] currentRow : matrixAnwser) {
+			for (int currentCell : currentRow) {
+				anwser += currentCell;
+			}
+		}
+		return anwser;
+	}
 
 	/**
 	 * Main method of {@link MatrixMultiplication}
 	 * 
 	 * @param args
 	 *            arguments of command line (number of matrices and threads).
+	 *    
 	 */
 	public static void main(String[] args) {
 		if (args.length < 2) {
@@ -50,12 +82,10 @@ public class MatrixMultiplication {
 		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException("Enter 2 integers");
 		}
-		
-		matrixInit();
-		
-		
-		
 
+		matrixInit();
+
+		System.out.println(calculateSum());
 	}
 
 }
