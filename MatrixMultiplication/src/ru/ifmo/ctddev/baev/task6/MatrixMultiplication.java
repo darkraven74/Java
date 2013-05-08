@@ -2,8 +2,6 @@ package ru.ifmo.ctddev.baev.task6;
 
 import java.util.Random;
 
-import javax.swing.JApplet;
-
 /**
  * Class for multi-threaded matrix multiplication.
  * 
@@ -64,6 +62,21 @@ public class MatrixMultiplication {
 		}
 		return anwser;
 	}
+	
+	private class MyRunnable implements Runnable {
+		private int curPos, cellsInThread;
+		public MyRunnable(int curPos, int cellsInThread) {
+			this.curPos = curPos;
+			this.cellsInThread = cellsInThread;
+		}
+		@Override
+		public void run() {
+			for (int i = 0; i < cellsInThread; i++) {
+				calculateCell(curPos / n, curPos % n);
+				curPos++;
+			}
+		}
+	}
 
 	/**
 	 * Main method of {@link MatrixMultiplication}
@@ -82,9 +95,25 @@ public class MatrixMultiplication {
 		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException("Enter 2 integers");
 		}
+		if (n <= 0 || m <= 0) {
+			throw new IllegalArgumentException("Enter 2 positive integers");
+		}
 
 		matrixInit();
 
+		int cellsInThread = (int)Math.floor(1.0 * n * n / m);
+		int cellsInLastThread = n * n - cellsInThread * (m - 1);
+		int curPos = 0;
+		Thread[] threads;
+		
+		for (int i = 0; i < m - 1; i++) {
+			createThread(curPos, cellsInThread);
+			curPos += cellsInThread;
+		}
+		createThread(curPos, cellsInLastThread);
+		
+		
+		
 		System.out.println(calculateSum());
 	}
 
