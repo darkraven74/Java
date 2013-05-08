@@ -39,8 +39,14 @@ public class Invoker {
 		Object obj;
 		try {
 			obj = c.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch (InstantiationException e) {
 			System.out.println("Error! can't instance");
+			e.printStackTrace();
+			return;
+		} catch (IllegalAccessException e) {
+			System.out
+					.println("Error! class or its nullary constructor is not accessible");
+			e.printStackTrace();
 			return;
 		}
 
@@ -53,9 +59,9 @@ public class Invoker {
 				if (methodArgs.length != args2.length) {
 					continue;
 				}
+
 				for (Class<?> curArg : methodArgs) {
-					if (!curArg.equals(Object.class)
-							&& !curArg.equals(String.class)) {
+					if (!curArg.isAssignableFrom(String.class)) {
 						wasError = true;
 						break;
 					}
@@ -65,9 +71,16 @@ public class Invoker {
 						method.invoke(obj, args2);
 						System.out.println(method);
 						System.out.println(obj);
-					} catch (IllegalAccessException | IllegalArgumentException
-							| InvocationTargetException e) {
+					} catch (IllegalAccessException e) {
+						System.out.println("Error on method " + methodName
+								+ ": method is inaccessible");
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
 						System.out.println("Error on method " + methodName);
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						System.out.println("Error on method " + methodName
+								+ ": method throws an exception");
 						e.printStackTrace();
 					}
 				}
