@@ -74,12 +74,12 @@ public class MatrixMultiplication {
 	}
 
 	/**
-	 * Class MyRunnable calculates data in thread.
+	 * Class Worker calculates data in thread.
 	 * 
 	 * @author Vladimir Baev
 	 * 
 	 */
-	private static class MyRunnable implements Runnable {
+	private static class Worker implements Runnable {
 		/** start position to calculating. */
 		private int curPos;
 		/** number of cells in thread. */
@@ -92,7 +92,7 @@ public class MatrixMultiplication {
 		 * @param cellsInThread
 		 *            number of cells in thread.
 		 */
-		public MyRunnable(int curPos, int cellsInThread) {
+		public Worker(int curPos, int cellsInThread) {
 			this.curPos = curPos;
 			this.cellsInThread = cellsInThread;
 		}
@@ -111,9 +111,11 @@ public class MatrixMultiplication {
 	 * 
 	 * @param args
 	 *            arguments of command line (number of matrices and threads).
+	 * @throws InterruptedException
+	 *             in cause of thread interruption.
 	 * 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		if (args.length < 2) {
 			throw new IllegalArgumentException("Enter 2 arguments");
 		}
@@ -137,19 +139,15 @@ public class MatrixMultiplication {
 		long startTime = System.nanoTime();
 
 		for (int i = 0; i < m - 1; i++) {
-			threads[i] = new Thread(new MyRunnable(curPos, cellsInThread));
+			threads[i] = new Thread(new Worker(curPos, cellsInThread));
 			threads[i].start();
 			curPos += cellsInThread;
 		}
-		threads[m - 1] = new Thread(new MyRunnable(curPos, cellsInLastThread));
+		threads[m - 1] = new Thread(new Worker(curPos, cellsInLastThread));
 		threads[m - 1].start();
 
 		for (int i = 0; i < m; i++) {
-			try {
-				threads[i].join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			threads[i].join();
 		}
 
 		workTime = (System.nanoTime() - startTime) / 1e6;

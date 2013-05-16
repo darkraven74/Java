@@ -28,7 +28,12 @@ public class Test {
 			argsForMatrixMultiplication[1] = String.valueOf(threads);
 			double sumTime = 0;
 			for (int i = 0; i < 50; i++) {
-				MatrixMultiplication.main(argsForMatrixMultiplication);
+				try {
+					MatrixMultiplication.main(argsForMatrixMultiplication);
+				} catch (InterruptedException e) {
+					System.out.println("Error! Thread was interrupted");
+					e.printStackTrace();
+				}
 				sumTime += MatrixMultiplication.getWorkTime();
 			}
 			out.println(sumTime / 50);
