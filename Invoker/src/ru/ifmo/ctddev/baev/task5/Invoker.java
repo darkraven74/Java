@@ -3,10 +3,13 @@ package ru.ifmo.ctddev.baev.task5;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Arrays;
 
 public class Invoker {
-	
+
 	public static void main(String[] args) {
 		if (args.length < 2) {
 			System.out.println("Error! Enter more than 1 argument");
@@ -14,12 +17,18 @@ public class Invoker {
 		}
 
 		String className = args[0];
-		Class<?> c;
+		Class<?> c = null;
+		ClassLoader cl;
+
 		try {
-			c = Class.forName(className);
+			URL path = new URL("file://.");
+			cl = new URLClassLoader(new URL[] { path });
+			c = cl.loadClass(className);
 		} catch (ClassNotFoundException e) {
 			System.out.println("Error! Class not found");
 			return;
+		} catch (MalformedURLException e) {
+
 		}
 
 		int modifier = c.getModifiers();
@@ -44,8 +53,7 @@ public class Invoker {
 			e.printStackTrace();
 			return;
 		} catch (IllegalAccessException e) {
-			System.out
-					.println("Error! class or its nullary constructor is not accessible");
+			System.out.println("Error! class or its nullary constructor is not accessible");
 			e.printStackTrace();
 			return;
 		}
@@ -72,15 +80,13 @@ public class Invoker {
 						System.out.println(method);
 						System.out.println(obj);
 					} catch (IllegalAccessException e) {
-						System.out.println("Error on method " + methodName
-								+ ": method is inaccessible");
+						System.out.println("Error on method " + methodName + ": method is inaccessible");
 						e.printStackTrace();
 					} catch (IllegalArgumentException e) {
 						System.out.println("Error on method " + methodName);
 						e.printStackTrace();
 					} catch (InvocationTargetException e) {
-						System.out.println("Error on method " + methodName
-								+ ": method throws an exception");
+						System.out.println("Error on method " + methodName + ": method throws an exception");
 						e.printStackTrace();
 					}
 				}
