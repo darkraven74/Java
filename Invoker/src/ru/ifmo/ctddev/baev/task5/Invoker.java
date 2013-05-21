@@ -7,6 +7,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Invoker {
 
@@ -60,6 +62,7 @@ public class Invoker {
 
 		Object[] args2 = Arrays.copyOfRange(args, 2, args.length);
 		String methodName = args[1];
+		Set<String> s = new HashSet<String>();
 		for (Method method : c.getMethods()) {
 			if (method.getName().equals(methodName)) {
 				boolean wasError = false;
@@ -67,16 +70,16 @@ public class Invoker {
 				if (methodArgs.length != args2.length) {
 					continue;
 				}
-
 				for (Class<?> curArg : methodArgs) {
 					if (!curArg.isAssignableFrom(String.class)) {
 						wasError = true;
 						break;
 					}
 				}
-				if (!wasError) {
+				if (!wasError && !s.contains(Arrays.toString(methodArgs))) {
 					try {
 						method.invoke(obj, args2);
+						s.add(Arrays.toString(methodArgs));
 						System.out.println(method);
 						System.out.println(obj);
 					} catch (IllegalAccessException e) {
