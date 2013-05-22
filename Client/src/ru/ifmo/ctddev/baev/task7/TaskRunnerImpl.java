@@ -40,10 +40,40 @@ public class TaskRunnerImpl implements TaskRunner {
 		}
 	}
 
+	/**
+	 * Class for solving tasks.
+	 * 
+	 * @author Vladimir Baev
+	 * 
+	 */
+	private class Worker implements Runnable {
+
+		@Override
+		public void run() {
+			while (!isStopped) {
+				Element e = queue.poll();
+				if (e != null) {
+					e.result = e.task.run(e.value);
+					e.notify();
+				} else {
+					try {
+						isNotEmpty.wait();
+					} catch (InterruptedException e1) {
+						Thread.currentThread().interrupt();
+					}
+				}
+			}
+		}
+	}
+
 	/** queue of tasks. */
-	private BlockingQueue<Element<?, ?>> queue;
+	private BlockingQueue<Element> queue;
 	/** number of working threads. */
 	private int threadNumber;
+	/** isStopped flag of {@link TaskRunnerImpl}. */
+	private volatile boolean isStopped;
+	/** isEmpty flag of {@link TaskRunnerImpl}. */
+	private Object isNotEmpty;
 
 	/**
 	 * Constructor for {@link TaskRunnerImpl}
@@ -53,15 +83,31 @@ public class TaskRunnerImpl implements TaskRunner {
 	 */
 	public TaskRunnerImpl(int threadNumber) {
 		this.threadNumber = threadNumber;
-		queue = new LinkedBlockingQueue<Element<?, ?>>();
+		queue = new LinkedBlockingQueue<Element>();
+		isStopped = false;
+		Thread[] threads = new Thread[threadNumber];
+		for (int i = 0; i < threadNumber; i++) {
+			threads[i] = new Thread(new Worker());
+			threads[i].start();
+		}
 	}
 
 	@Override
-	public <X, Y> X run(Task<X, Y> task, Y value) throws InterruptedException {
+	public <X, Y> X run(Task<X, Y> task, Y value) {
 		Element<X, Y> e = new Element<X, Y>(task, value);
 		queue.add(e);
-		e.wait();
+		isNotEmpty.notify();
+
+		try {
+			e.wait();
+		} catch (InterruptedException e1) {
+			Thread.currentThread().interrupt();
+		}
 		return e.result;
+	}
+
+	public void stop() {
+		isStopped = true;
 	}
 
 }
