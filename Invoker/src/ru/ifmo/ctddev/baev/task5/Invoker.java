@@ -1,5 +1,6 @@
 package ru.ifmo.ctddev.baev.task5;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -23,9 +24,11 @@ public class Invoker {
 		ClassLoader cl;
 
 		try {
-			URL path = new URL("file://.");
+			File classPath = new File("./");
+			URL path = classPath.toURI().toURL();
 			cl = new URLClassLoader(new URL[] { path });
 			c = cl.loadClass(className);
+
 		} catch (ClassNotFoundException e) {
 			System.out.println("Error! Class not found");
 			return;
