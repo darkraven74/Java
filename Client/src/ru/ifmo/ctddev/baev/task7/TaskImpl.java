@@ -17,5 +17,4 @@ public class TaskImpl<X, Y> implements Task<X, Y> {
 	public X run(Y value) {
 		return (X)((String)value).concat("!");
 	}
-
 }
