@@ -3,6 +3,8 @@ package ru.ifmo.ctddev.baev.task7;
 import java.util.Random;
 
 public class Test {
+	
+	
 	public static void main(String[] args) {
 		Random r1 = new Random();
 		System.out.println(r1.nextInt(100));

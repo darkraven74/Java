@@ -11,7 +11,6 @@ package ru.ifmo.ctddev.baev.task7;
  *            the type of input value.
  */
 public class TaskImpl<X, Y> implements Task<X, Y> {
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public X run(Y value) {

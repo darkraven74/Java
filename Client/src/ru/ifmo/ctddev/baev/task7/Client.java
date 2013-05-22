@@ -9,7 +9,6 @@ import java.util.Random;
  * 
  */
 public class Client {
-
 	/**
 	 * Generates random {@link String}.
 	 * 

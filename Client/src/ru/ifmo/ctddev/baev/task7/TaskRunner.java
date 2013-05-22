@@ -15,6 +15,7 @@ public interface TaskRunner {
 	 * @param value
 	 *            input value.
 	 * @return output value.
+	 * @throws InterruptedException in case of interrupting.
 	 */
-	<X, Y> X run(Task<X, Y> task, Y value);
+	<X, Y> X run(Task<X, Y> task, Y value) throws InterruptedException;
 }
