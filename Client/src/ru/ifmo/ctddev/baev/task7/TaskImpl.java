@@ -15,6 +15,6 @@ public class TaskImpl<X, Y> implements Task<X, Y> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public X run(Y value) {
-		return (X)((String)value).concat("!");
+		return (X) ((String) value).concat("!");
 	}
 }
