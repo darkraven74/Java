@@ -21,7 +21,7 @@ public class Client {
 		for (int i = 0; i < ansLength; i++) {
 			ans[i] = (char) ('a' + rand.nextInt(26));
 		}
-		return ans.toString();
+		return new String(ans);
 	}
 
 	/**

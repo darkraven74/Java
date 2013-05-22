@@ -41,7 +41,7 @@ public class TaskRunnerImpl implements TaskRunner {
 	}
 
 	/**
-	 * Class for solving tasks.
+	 * Class for multi-threaded solving tasks.
 	 * 
 	 * @author Vladimir Baev
 	 * 
@@ -53,8 +53,14 @@ public class TaskRunnerImpl implements TaskRunner {
 			while (!isStopped) {
 				try {
 					Element e = queue.take();
+					if (e == null) {
+						break;
+					}
 					e.result = e.task.run(e.value);
-					e.notify();
+					synchronized (e) {
+						e.notify();
+					}
+
 				} catch (InterruptedException e1) {
 					Thread.currentThread().interrupt();
 				}
@@ -88,15 +94,15 @@ public class TaskRunnerImpl implements TaskRunner {
 		Element<X, Y> e = new Element<X, Y>(task, value);
 		try {
 			queue.put(e);
-			e.wait();
+			synchronized (e) {
+				while (e.result == null) {
+					e.wait();
+				}
+			}
+
 		} catch (InterruptedException e1) {
 			Thread.currentThread().interrupt();
 		}
 		return e.result;
 	}
-
-	public void stop() {
-		isStopped = true;
-	}
-
 }
