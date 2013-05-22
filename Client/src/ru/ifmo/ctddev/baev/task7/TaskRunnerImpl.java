@@ -39,6 +39,9 @@ public class TaskRunnerImpl implements TaskRunner {
 			this.result = null;
 		}
 
+		/**
+		 * Runs the task.
+		 */
 		public synchronized void run() {
 			result = task.run(value);
 			this.notify();
