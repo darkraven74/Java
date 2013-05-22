@@ -7,7 +7,7 @@ package ru.ifmo.ctddev.baev.task7;
  * 
  */
 public class ClientMaker implements Runnable {
-	/** taskRunner for client. */
+	/** TaskRunner for client. */
 	private TaskRunner taskRunner;
 
 	/**

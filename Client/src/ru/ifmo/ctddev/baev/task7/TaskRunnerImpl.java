@@ -18,11 +18,11 @@ public class TaskRunnerImpl implements TaskRunner {
 	 * 
 	 */
 	private class Element<X, Y> {
-		/** task to solve. */
+		/** Task to solve. */
 		public Task<X, Y> task;
-		/** input value. */
+		/** Input value. */
 		public Y value;
-		/** output value. */
+		/** Output value. */
 		public X result;
 
 		/**
@@ -66,7 +66,7 @@ public class TaskRunnerImpl implements TaskRunner {
 		}
 	}
 
-	/** queue of tasks. */
+	/** Queue of tasks. */
 	private BlockingQueue<Element<?, ?>> queue;
 
 	/**
