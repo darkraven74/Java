@@ -51,16 +51,12 @@ public class TaskRunnerImpl implements TaskRunner {
 		@Override
 		public void run() {
 			while (!isStopped) {
-				Element e = queue.poll();
-				if (e != null) {
+				try {
+					Element e = queue.take();
 					e.result = e.task.run(e.value);
 					e.notify();
-				} else {
-					try {
-						isNotEmpty.wait();
-					} catch (InterruptedException e1) {
-						Thread.currentThread().interrupt();
-					}
+				} catch (InterruptedException e1) {
+					Thread.currentThread().interrupt();
 				}
 			}
 		}
@@ -68,12 +64,8 @@ public class TaskRunnerImpl implements TaskRunner {
 
 	/** queue of tasks. */
 	private BlockingQueue<Element> queue;
-	/** number of working threads. */
-	private int threadNumber;
 	/** isStopped flag of {@link TaskRunnerImpl}. */
 	private volatile boolean isStopped;
-	/** isEmpty flag of {@link TaskRunnerImpl}. */
-	private Object isNotEmpty;
 
 	/**
 	 * Constructor for {@link TaskRunnerImpl}
@@ -82,7 +74,6 @@ public class TaskRunnerImpl implements TaskRunner {
 	 *            number of working threads.
 	 */
 	public TaskRunnerImpl(int threadNumber) {
-		this.threadNumber = threadNumber;
 		queue = new LinkedBlockingQueue<Element>();
 		isStopped = false;
 		Thread[] threads = new Thread[threadNumber];
@@ -95,10 +86,8 @@ public class TaskRunnerImpl implements TaskRunner {
 	@Override
 	public <X, Y> X run(Task<X, Y> task, Y value) {
 		Element<X, Y> e = new Element<X, Y>(task, value);
-		queue.add(e);
-		isNotEmpty.notify();
-
 		try {
+			queue.put(e);
 			e.wait();
 		} catch (InterruptedException e1) {
 			Thread.currentThread().interrupt();
