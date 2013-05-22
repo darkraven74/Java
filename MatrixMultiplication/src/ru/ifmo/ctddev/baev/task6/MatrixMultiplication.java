@@ -107,7 +107,7 @@ public class MatrixMultiplication {
 	}
 
 	/**
-	 * Main method of {@link MatrixMultiplication}
+	 * Main method of {@link MatrixMultiplication}.
 	 * 
 	 * @param args
 	 *            arguments of command line (number of matrices and threads).

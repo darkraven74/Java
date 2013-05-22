@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * Class for testing {@link MatrixMultiplication}
+ * Class for testing {@link MatrixMultiplication}.
  * 
  * @author Vladimir Baev
  * 
@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 public class Test {
 
 	/**
-	 * Main method of {@link Test}
+	 * Main method of {@link Test}.
 	 * 
 	 * @param args
 	 *            command line arguments.
