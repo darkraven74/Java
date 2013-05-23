@@ -9,6 +9,9 @@ acd_task_F/
 doc/
 /doc/
 google-play-services_lib/
+LogicTask/
+LogicTask2/
+test/
 # OS Files #
 .DS_Store
  
