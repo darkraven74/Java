@@ -36,6 +36,7 @@ public class Client {
 			String value = nextString();
 			String result = taskRunner.run(task, value);
 			System.out.println(result);
+			//bad if interrupt
 		}
 	}
 }
