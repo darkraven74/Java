@@ -100,7 +100,7 @@ public class TaskRunnerImpl implements TaskRunner {
 			}
 		} catch (InterruptedException e1) {
 			Thread.currentThread().interrupt();
-			//bad
+			//bad 
 		}
 		return e.result;
 	}
