@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Invoker {
-
+	
 	public static void main(String[] args) {
 		if (args.length < 2) {
 			System.out.println("Error! Enter more than 1 argument");
@@ -45,10 +45,10 @@ public class Invoker {
 			System.out.println("Error! " + className + " is abstract");
 			return;
 		}
-		if (Modifier.isStatic(modifier)) {
-			System.out.println("Error! " + className + " is static");
-			return;
-		}
+//		if (Modifier.isStatic(modifier)) {
+//			System.out.println("Error! " + className + " is static");
+//			return;
+//		}
 
 		Object obj;
 		try {
