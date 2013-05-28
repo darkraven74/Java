@@ -58,13 +58,14 @@ public class TaskRunnerImpl implements TaskRunner {
 
 		@Override
 		public void run() {
-			while (true) {
-				try {
-					Element<?, ?> e = queue.take();
-					e.run();
-				} catch (InterruptedException e1) {
-					Thread.currentThread().interrupt();
+			try {
+				while (true) {
+						Element<?, ?> e = queue.take();
+						e.run();
 				}
+			} catch (InterruptedException e1) {
+				Thread.currentThread().interrupt();
+				//bad
 			}
 		}
 	}
@@ -99,6 +100,7 @@ public class TaskRunnerImpl implements TaskRunner {
 			}
 		} catch (InterruptedException e1) {
 			Thread.currentThread().interrupt();
+			//bad 
 		}
 		return e.result;
 	}

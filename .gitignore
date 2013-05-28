@@ -10,6 +10,9 @@ doc/
 /doc/
 google-play-services_lib/
 eclipse_baclup.7z
+LogicTask/
+LogicTask2/
+test/
 # OS Files #
 .DS_Store
  
