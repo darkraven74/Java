@@ -1,6 +1,6 @@
 package ru.ifmo.ctddev.baev.task8;
 
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Main class for testing.
  * 
- * @author DarkRaven
+ * @author Vladimir Baev
  * 
  */
 public class Main {
@@ -24,9 +24,15 @@ public class Main {
 		int maximumPoolSize = 5;
 		long keepAliveTime = 10;
 		TimeUnit unit = TimeUnit.SECONDS;
-		Executor exec = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit, 
+		ExecutorService exec = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit,
 				new LinkedBlockingQueue<Runnable>());
-		
+		Client c1 = new Client();
+		c1.runTasks(exec);
+
+		// Thread t1 = new Thread(new ClientMaker(exec));
+		// Thread t2 = new Thread(new ClientMaker(exec));
+		// t1.start();
+		// t2.start();
 
 	}
 }
