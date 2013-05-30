@@ -1,7 +1,5 @@
 package ru.ifmo.ctddev.baev.task8;
 
-import java.util.concurrent.ExecutorService;
-
 /**
  * Class for making clients in multiple threads.
  * 
@@ -9,22 +7,22 @@ import java.util.concurrent.ExecutorService;
  * 
  */
 public class ClientMaker implements Runnable {
-	/** ExecutorService for client. */
-	private ExecutorService exec;
+	/** TaskRunner for client. */
+	private TaskRunner taskRunner;
 
 	/**
 	 * Constructor for {@link ClientMaker}.
 	 * 
-	 * @param exec
-	 *            {@link ExecutorService} for client.
+	 * @param taskRunner
+	 *            {@link TaskRunner} for client.
 	 */
-	public ClientMaker(ExecutorService exec) {
-		this.exec = exec;
+	public ClientMaker(TaskRunner taskRunner) {
+		this.taskRunner = taskRunner;
 	}
 
 	@Override
 	public void run() {
 		Client client = new Client();
-		client.runTasks(exec);
+		client.runTasks(taskRunner);
 	}
 }
